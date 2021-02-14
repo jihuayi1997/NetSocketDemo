@@ -1,7 +1,7 @@
-﻿// Server.cpp: 定义应用程序的入口点。
+﻿// Client.cpp: 定义应用程序的入口点。
 //
 
-#include "Server.h"
+#include "Client.h"
 
 using namespace std;
 
