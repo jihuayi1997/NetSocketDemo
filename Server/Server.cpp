@@ -103,6 +103,8 @@ int __cdecl main(void)
 
         iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0) {
+            recvbuf[iResult%recvbuflen] = '\0';
+            printf("收到了消息：%s\n", recvbuf);
             printf("Bytes received: %d\n", iResult);
 
             // Echo the buffer back to the sender
