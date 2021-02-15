@@ -31,6 +31,7 @@ int __cdecl main(void)
     int iSendResult;
     char recvbuf[DEFAULT_BUFLEN];
     int recvbuflen = DEFAULT_BUFLEN;
+    memset(recvbuf, 0, recvbuflen);
 
     // 初始化 Winsock
     iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -103,7 +104,6 @@ int __cdecl main(void)
 
         iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0) {
-            recvbuf[iResult%recvbuflen] = '\0';
             printf("收到了消息：%s\n", recvbuf);
             printf("Bytes received: %d\n", iResult);
 

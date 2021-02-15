@@ -28,6 +28,7 @@ int __cdecl main(int argc, char** argv)
     char recvbuf[DEFAULT_BUFLEN];
     int iResult;
     int recvbuflen = DEFAULT_BUFLEN;
+    memset(recvbuf, 0, recvbuflen);
 
     // Validate the parameters
     if (argc != 2) {
