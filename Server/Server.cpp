@@ -39,12 +39,12 @@ int __cdecl main(void)
         printf("WSAStartup failed with error: %d\n", iResult);
         return 1;
     }
-    printf("确定协议版本成功！\n");
+    printf("socket初始化成功，已确定协议版本！\n");
 
     ZeroMemory(&hints, sizeof(hints));
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_protocol = IPPROTO_TCP;
+    hints.ai_family = AF_INET;					// 指定IPv4地址系列
+    hints.ai_socktype = SOCK_STREAM;			// 指定流式套接字
+    hints.ai_protocol = IPPROTO_TCP;			// 指定TCP协议
     hints.ai_flags = AI_PASSIVE;
 
     // Resolve the server address and port
@@ -55,37 +55,38 @@ int __cdecl main(void)
         return 1;
     }
 
-    // Create a SOCKET for connecting to server
+    // 创建监听socket
     ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
     if (ListenSocket == INVALID_SOCKET) {
-        printf("socket failed with error: %ld\n", WSAGetLastError());
+        printf("创建监听socket失败，error: %ld\n", WSAGetLastError());
         freeaddrinfo(result);
         WSACleanup();
         return 1;
     }
-    printf("创建socket成功！\n");
+    printf("创建监听socket成功！\n");
 
-    // 建立 TCP listening socket
+    // 绑定端口
     iResult = bind(ListenSocket, result->ai_addr, (int)result->ai_addrlen);
     if (iResult == SOCKET_ERROR) {
-        printf("bind failed with error: %d\n", WSAGetLastError());
+        printf("端口绑定失败，error: %d\n", WSAGetLastError());
         freeaddrinfo(result);
         closesocket(ListenSocket);
         WSACleanup();
         return 1;
     }
-    printf("绑定成功！\n");
+    printf("端口绑定成功！\n");
 
     freeaddrinfo(result);
 
+	// 监听端口
     iResult = listen(ListenSocket, SOMAXCONN);
     if (iResult == SOCKET_ERROR) {
-        printf("listen failed with error: %d\n", WSAGetLastError());
+        printf("端口监听失败，error: %d\n", WSAGetLastError());
         closesocket(ListenSocket);
         WSACleanup();
         return 1;
     }
-    printf("监听成功！\n");
+    printf("端口监听成功！\n");
 
     // 接受客户端 socket
     ClientSocket = accept(ListenSocket, NULL, NULL);
